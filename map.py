@@ -23,10 +23,10 @@ class Map:
     def get_map(self):
         for j, row in enumerate(self.map_tab):
             for i, value in enumerate(row):
-                self.map[(i, j)] = value
+                self.map[(j, i)] = value
 
     def check_collision(self, tile):
-        if self.map[tile] == 1:
+        if self.map[tile] == 1 and self.game.unit_map.unit_map[tile[0]][tile[1]] == 1:
             return False
         return True
 
@@ -38,10 +38,10 @@ class Map:
                 pg.draw.rect(self.game.screen, "darkgray", (pos[0] * 80, pos[1] * 80, 80, 80), 0)
 
 class UnitMap:
-    def __init__(self, game, map_g):
+    def __init__(self, game, map_game):
         self.game = game
         self.unit_map = map_tab
-        self.map = map_g
+        self.map = map_game
 
     def place_unit(self, unit, tile):
         if not self.map.check_collision(tile):

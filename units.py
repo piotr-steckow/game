@@ -26,18 +26,25 @@ class Unit:
             return False
 
     def move(self, tile):
-        if not self.game.map.check_collision(tile):
-            self.game.unit_map.place_unit(self, tile)
+        if not self.dead:
+            if not self.game.map.check_collision(tile):
+                self.game.unit_map.place_unit(self, tile)
+                return True
+            return False
+        return True
+
 
     def draw(self):
-        pg.draw.circle(self.game.screen, "white", (self.x*80 + 40, self.y*80 + 40), 25)
+        if not self.dead:
+            pg.draw.circle(self.game.screen, self.team, (self.x*80 + 40, self.y*80 + 40), 25)
 
 class Knight(Unit):
-    def __init__(self, x, y, game):
+    def __init__(self, x, y, team, game):
         super().__init__(x, y, game, name="Knight", hp=150, atk=40, range=1, speed=3, cost=150)
         self.dead = False
         self.x = x
         self.y = y
+        self.team = team
         self.game = game
 
 class Archer(Unit):
@@ -70,4 +77,4 @@ class UnitHandler:
 
     def take_turn(self, tile, turn_id):
         unit = self.units[turn_id]
-        unit.move(tile)
+        return unit.move(tile)
