@@ -4,6 +4,7 @@ from settings import *
 from map import *
 from units import *
 
+
 class Game:
     def __init__(self):
         pg.init()
@@ -69,6 +70,7 @@ class Game:
             self.check_events()
             self.update()
             self.draw()
+
 
 if __name__ == "__main__":
     game = Game()

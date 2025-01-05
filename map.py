@@ -10,8 +10,10 @@ map_tab = [
     [1, 1, 1, 1, 0, 0, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
+
 import pygame as pg
 from units import Unit
+
 
 class Map:
     def __init__(self, game):
@@ -36,6 +38,7 @@ class Map:
                 pg.draw.rect(self.game.screen, "darkgray", (pos[0] * 80, pos[1] * 80, 80, 80), 1)
             else:
                 pg.draw.rect(self.game.screen, "darkgray", (pos[0] * 80, pos[1] * 80, 80, 80), 0)
+
 
 class UnitMap:
     def __init__(self, game, map_game):
@@ -70,4 +73,4 @@ class UnitMap:
                 font = pg.font.Font(None, 36)
                 text_surface = font.render(
                     f"{unit.name}: HP={unit.hp}", True, "white")
-                self.game.screen.blit(text_surface, (10, 10))
+                self.game.screen.blit(text_surface, (self.game.hovered_tile[0] * 80, self.game.hovered_tile[1] * 80))
