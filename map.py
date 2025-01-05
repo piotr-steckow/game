@@ -11,7 +11,7 @@ map_tab = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
 import pygame as pg
-
+from units import Unit
 
 class Map:
     def __init__(self, game):
@@ -51,10 +51,23 @@ class UnitMap:
                 unit.x = tile[0]
                 unit.y = tile[1]
 
+    def remove_unit(self, unit):
+        if isinstance(self.unit_map[unit.x][unit.y], Unit):
+            self.unit_map[unit.x][unit.y] = 1
 
     def draw(self):
         for x in self.unit_map:
             for y in x:
-                if y != 1 and y != 0:
-                    y.draw()
+                if isinstance(y, Unit):
+                    if y == self.game.unit_handler.units[self.game.turn]:
+                        y.draw(gamma=255)
+                    else:
+                        y.draw(gamma=155)
 
+        if self.game.hovered_tile:
+            if isinstance(self.unit_map[self.game.hovered_tile[0]][self.game.hovered_tile[1]], Unit):
+                unit = self.unit_map[self.game.hovered_tile[0]][self.game.hovered_tile[1]]
+                font = pg.font.Font(None, 36)
+                text_surface = font.render(
+                    f"{unit.name}: HP={unit.hp}", True, "white")
+                self.game.screen.blit(text_surface, (10, 10))
