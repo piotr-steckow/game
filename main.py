@@ -33,15 +33,13 @@ class Game:
         if self.clicked_tile is not None:
             if self.unit_handler.take_turn(self.clicked_tile, self.turn):
                 self.turn += 1
-                if self.turn >= len(self.unit_handler.units):
-                    self.turn = 0
             self.clicked_tile = None
 
-        removed_count, new_dead = self.unit_handler.remove_dead_units()
-        if removed_count > 0 and self.turn >= len(self.unit_handler.units):
-            self.turn = 0
-        if new_dead:
+        removed_count, new_dead, dead_index = self.unit_handler.remove_dead_units()
+        if new_dead and dead_index < self.turn:
             self.turn -= 1
+        if self.turn >= len(self.unit_handler.units):
+            self.turn = 0
 
     def draw(self):
         self.screen.fill("black")
@@ -74,16 +72,47 @@ class Game:
 
 if __name__ == "__main__":
     game = Game()
-    K0 = Knight(0, 0, "red", game)
-    K1 = Archer(9, 9, "blue", game)
-    K2 = Footman(0, 9, "red", game)
-    K3 = Knight(9, 0, "blue", game)
-    game.unit_map.place_unit(K0, (0, 0))
-    game.unit_map.place_unit(K1, (9, 9))
-    game.unit_map.place_unit(K2, (0, 9))
-    game.unit_map.place_unit(K3, (9, 0))
-    game.unit_handler.add_unit(K0)
-    game.unit_handler.add_unit(K1)
-    game.unit_handler.add_unit(K2)
-    game.unit_handler.add_unit(K3)
+
+    # Create Red Team Units
+    R0 = Knight(2, 0, "red", game)
+    R1 = Archer(3, 0, "red", game)
+    R2 = Footman(4, 0, "red", game)
+    R3 = Knight(5, 0, "red", game)
+    R4 = Crossbowman(6, 0, "red", game)
+
+    # Create Blue Team Units
+    B0 = Knight(2, 9, "blue", game)
+    B1 = Archer(3, 9, "blue", game)
+    B2 = Footman(4, 9, "blue", game)
+    B3 = Knight(5, 9, "blue", game)
+    B4 = Crossbowman(6, 9, "blue", game)
+
+    # Place Red Team Units
+    game.unit_map.place_unit(R0, (2, 0))
+    game.unit_map.place_unit(R1, (3, 0))
+    game.unit_map.place_unit(R2, (4, 0))
+    game.unit_map.place_unit(R3, (5, 0))
+    game.unit_map.place_unit(R4, (6, 0))
+
+    # Place Blue Team Units
+    game.unit_map.place_unit(B0, (2, 9))
+    game.unit_map.place_unit(B1, (3, 9))
+    game.unit_map.place_unit(B2, (4, 9))
+    game.unit_map.place_unit(B3, (5, 9))
+    game.unit_map.place_unit(B4, (6, 9))
+
+    # Add Units to UnitHandler
+    game.unit_handler.add_unit(R0)
+    game.unit_handler.add_unit(R1)
+    game.unit_handler.add_unit(R2)
+    game.unit_handler.add_unit(R3)
+    game.unit_handler.add_unit(R4)
+    game.unit_handler.add_unit(B0)
+    game.unit_handler.add_unit(B1)
+    game.unit_handler.add_unit(B2)
+    game.unit_handler.add_unit(B3)
+    game.unit_handler.add_unit(B4)
+
     game.run()
+
+

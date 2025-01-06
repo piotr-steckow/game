@@ -3,8 +3,8 @@ map_tab = [
     [1, 1, 0, 1, 1, 1, 0, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
     [1, 1, 1, 0, 0, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 0, 0, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 0, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 1, 1, 1, 0, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 0, 0, 1, 1, 1],
     [1, 1, 1, 1, 0, 0, 1, 1, 1, 1],
@@ -35,9 +35,10 @@ class Map:
     def draw(self):
         for pos in self.map:
             if self.map[pos] == 1:
-                pg.draw.rect(self.game.screen, "darkgray", (pos[0] * 80, pos[1] * 80, 80, 80), 1)
+                pass
             else:
-                pg.draw.rect(self.game.screen, "darkgray", (pos[0] * 80, pos[1] * 80, 80, 80), 0)
+                pg.draw.rect(self.game.screen, "darkgray", (pos[0] * 80 + 20, pos[1] * 80 + 20, 40, 40), 0)
+            pg.draw.rect(self.game.screen, "darkgray", (pos[0] * 80, pos[1] * 80, 80, 80), 1)
 
 
 class UnitMap:
@@ -72,5 +73,5 @@ class UnitMap:
                 unit = self.unit_map[self.game.hovered_tile[0]][self.game.hovered_tile[1]]
                 font = pg.font.Font(None, 36)
                 text_surface = font.render(
-                    f"{unit.name}: HP={unit.hp}", True, "white")
-                self.game.screen.blit(text_surface, (self.game.hovered_tile[0] * 80, self.game.hovered_tile[1] * 80))
+                    f"{unit.name}: HP={unit.hp}", True, unit.team)
+                self.game.screen.blit(text_surface, (self.game.hovered_tile[0] * 80+ 80, self.game.hovered_tile[1] * 80))
