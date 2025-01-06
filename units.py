@@ -252,3 +252,17 @@ class UnitHandler:
         self.game.unit_map.remove_unit(unit)
         self.units.remove(unit)
         del unit
+
+    def check_victory(self):
+        blues = 0
+        reds = 0
+        for unit in self.units:
+            if unit.team == "red":
+                reds +=1
+            else:
+                blues +=1
+        if reds == 0:
+            return "blue"
+        if blues == 0:
+            return "red"
+        return False

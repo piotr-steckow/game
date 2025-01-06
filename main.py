@@ -25,6 +25,12 @@ class Game:
         max_x, max_y = len(self.map.map_tab[0]), len(self.map.map_tab)
         return 0 <= tile[0] < max_x and 0 <= tile[1] < max_y
 
+    def end_game(self, condition):
+        if condition != False:
+            print(condition, "won")
+            pg.quit()
+            sys.exit()
+
     def update(self):
         pg.display.flip()
         self.delta_time = self.clock.tick(FPS)
@@ -33,13 +39,20 @@ class Game:
         if self.clicked_tile is not None:
             if self.unit_handler.take_turn(self.clicked_tile, self.turn):
                 self.turn += 1
-            self.clicked_tile = None
 
         removed_count, new_dead, dead_index = self.unit_handler.remove_dead_units()
+        if new_dead:
+            if self.unit_handler.units[self.turn-1].name == "Footman" or self.unit_handler.units[self.turn-1].name == "Knight":
+                self.unit_handler.units[self.turn-1].move(self.clicked_tile)
+        self.clicked_tile = None
+
         if new_dead and dead_index < self.turn:
             self.turn -= 1
         if self.turn >= len(self.unit_handler.units):
             self.turn = 0
+
+        end = self.unit_handler.check_victory()
+        self.end_game(end)
 
     def draw(self):
         self.screen.fill("black")
