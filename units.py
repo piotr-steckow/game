@@ -168,7 +168,7 @@ class Unit:
 
 class Knight(Unit):
     def __init__(self, x, y, team, game):
-        super().__init__(x, y, game, name="Knight", hp=150, atk=40, range=1, speed=3, cost=150)
+        super().__init__(x, y, game, name="Knight", hp=150, atk=40, range=1, speed=4, cost=150)
         self.team = team
 
 
@@ -180,7 +180,7 @@ class Archer(Unit):
 
 class Crossbowman(Unit):
     def __init__(self, x, y, team, game):
-        super().__init__(x, y, game, name="Crossbowman", hp=60, atk=40, range=4, speed=2, cost=75)
+        super().__init__(x, y, game, name="Crossbowman", hp=60, atk=40, range=6, speed=1, cost=75)
         self.team = team
 
 
@@ -192,7 +192,7 @@ class Footman(Unit):
 
 class DeathKnight(Unit):
     def __init__(self, x, y, team, game):
-        super().__init__(x, y, game, name="Footman", hp=140, atk=20, range=1, speed=2, cost=200)
+        super().__init__(x, y, game, name="Footman", hp=140, atk=25, range=1, speed=2, cost=200)
         self.lifesteal = 10
         self.team = team
 
