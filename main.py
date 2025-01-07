@@ -42,7 +42,7 @@ class Game:
 
         removed_count, new_dead, dead_index = self.unit_handler.remove_dead_units()
 
-        if new_dead and self.turn <= len(self.unit_handler.units) and self.turn < dead_index:
+        if new_dead and self.turn <= len(self.unit_handler.units) and self.turn <= dead_index:
             if self.unit_handler.units[self.turn-1].name == "Footman" or self.unit_handler.units[self.turn-1].name == "Knight":
                 self.unit_handler.units[self.turn-1].move(self.clicked_tile)
 
