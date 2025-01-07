@@ -44,11 +44,11 @@ class Game:
 
         if new_dead and self.turn <= len(self.unit_handler.units) and self.turn <= dead_index:
             if self.unit_handler.units[self.turn-1].name == "Footman" or self.unit_handler.units[self.turn-1].name == "Knight":
-                self.unit_handler.units[self.turn-1].move(self.clicked_tile)
+                self.unit_map.place_unit(self.unit_handler.units[self.turn-1], self.clicked_tile)
 
         elif new_dead and (self.turn >= len(self.unit_handler.units) or self.turn > dead_index):
             if self.unit_handler.units[self.turn-2].name == "Footman" or self.unit_handler.units[self.turn-2].name == "Knight":
-                self.unit_handler.units[self.turn-2].move(self.clicked_tile)
+                self.unit_map.place_unit(self.unit_handler.units[self.turn-2], self.clicked_tile)
         self.clicked_tile = None
 
         if new_dead and dead_index < self.turn:
