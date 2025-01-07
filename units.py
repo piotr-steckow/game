@@ -11,6 +11,7 @@ class Unit:
         self.y = y
         self.name = name
         self.hp = hp
+        self.max_hp = hp
         self.atk = atk
         self.range = range
         self.speed = speed
@@ -124,6 +125,12 @@ class Unit:
         color = self.get_unit_color(gamma)
         pg.draw.circle(self.game.screen, color, (self.x * 80 + 40, self.y * 80 + 40), 25)
 
+        current_health_width = max(0, int((self.hp / self.max_hp) * 50))
+        lost_health_width = 50 - current_health_width
+
+        pg.draw.rect(self.game.screen,(0, 255, 0), (self.x * 80 + 40 - 50 // 2, self.y * 80 + 5, current_health_width, 5))
+        pg.draw.rect(self.game.screen,(255, 0, 0),  (self.x * 80 + 40 - 50 // 2 + current_health_width, self.y * 80 + 5, lost_health_width, 5))
+
         if self.game.unit_handler.units[self.game.turn] == self:
             if self.ready_to_attack:
                 self.highlight_valid_attacks()
@@ -172,36 +179,6 @@ class Unit:
                 if isinstance(self.game.unit_map.unit_map[self.x + 1][self.y - 1], Unit) and self.game.unit_map.unit_map[self.x + 1][self.y - 1].team != self.team:
                     pg.draw.rect(self.game.screen, "red", (self.x * 80 + 80, self.y * 80 - 80, 80, 80), 3)
 
-
-class Knight(Unit):
-    def __init__(self, x, y, team, game):
-        super().__init__(x, y, game, name="Knight", hp=150, atk=40, range=1, speed=4, cost=150)
-        self.team = team
-
-
-class Archer(Unit):
-    def __init__(self, x, y, team, game):
-        super().__init__(x, y, game, name="Archer", hp=40, atk=30, range=5, speed=2, cost=50)
-        self.team = team
-
-
-class Crossbowman(Unit):
-    def __init__(self, x, y, team, game):
-        super().__init__(x, y, game, name="Crossbowman", hp=60, atk=40, range=6, speed=1, cost=75)
-        self.team = team
-
-
-class Footman(Unit):
-    def __init__(self, x, y, team, game):
-        super().__init__(x, y, game, name="Footman", hp=80, atk=20, range=1, speed=2, cost=25)
-        self.team = team
-
-
-class DeathKnight(Unit):
-    def __init__(self, x, y, team, game):
-        super().__init__(x, y, game, name="Footman", hp=140, atk=25, range=1, speed=2, cost=200)
-        self.lifesteal = 10
-        self.team = team
 
 
 class UnitHandler:
@@ -260,6 +237,29 @@ class UnitHandler:
         self.units.remove(unit)
         del unit
 
+    def display_all_units(self):
+        font = pg.font.Font(None, 36)
+        screen_width = self.game.screen.get_width()
+
+        for idx, unit in enumerate(self.units):
+            if unit.dead:
+                continue
+
+            y_position = 100 + idx * 50
+
+            name_color = (255, 0, 0) if unit.team == "red" else (0, 0, 255)
+            name_surface = font.render(unit.name, True, name_color)
+            name_rect = name_surface.get_rect()
+            name_rect.topleft = (screen_width - 300, y_position)
+            self.game.screen.blit(name_surface, name_rect)
+            max_bar_width = 100
+            bar_height = 15
+            current_health_width = max(0, int((unit.hp / unit.max_hp) * max_bar_width))
+            lost_health_width = max_bar_width - current_health_width
+
+            pg.draw.rect(self.game.screen,(0, 255, 0),(screen_width - 300 + name_rect.width + 10, y_position + 4, current_health_width, bar_height))
+            pg.draw.rect(self.game.screen,(255, 0, 0),(screen_width - 300 + name_rect.width + 10 + current_health_width, y_position + 4, lost_health_width,bar_height))
+
     def check_victory(self):
         blues = 0
         reds = 0
@@ -273,3 +273,34 @@ class UnitHandler:
         if blues == 0:
             return "red"
         return False
+
+
+class Knight(Unit):
+    def __init__(self, x, y, team, game):
+        super().__init__(x, y, game, name="Knight", hp=150, atk=40, range=1, speed=4, cost=150)
+        self.team = team
+
+
+class Archer(Unit):
+    def __init__(self, x, y, team, game):
+        super().__init__(x, y, game, name="Archer", hp=40, atk=30, range=5, speed=2, cost=50)
+        self.team = team
+
+
+class Crossbowman(Unit):
+    def __init__(self, x, y, team, game):
+        super().__init__(x, y, game, name="Crossbowman", hp=60, atk=40, range=6, speed=1, cost=75)
+        self.team = team
+
+
+class Footman(Unit):
+    def __init__(self, x, y, team, game):
+        super().__init__(x, y, game, name="Footman", hp=80, atk=20, range=1, speed=2, cost=25)
+        self.team = team
+
+
+class DeathKnight(Unit):
+    def __init__(self, x, y, team, game):
+        super().__init__(x, y, game, name="Footman", hp=140, atk=25, range=1, speed=2, cost=200)
+        self.lifesteal = 10
+        self.team = team

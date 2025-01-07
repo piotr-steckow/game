@@ -64,6 +64,7 @@ class Game:
         self.map.draw()
         self.unit_map.draw()
         self.unit_handler.display_current_unit()
+        self.unit_handler.display_all_units()
 
     def check_events(self):
         for event in pg.event.get():
