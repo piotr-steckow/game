@@ -127,9 +127,9 @@ class Unit:
 
         current_health_width = max(0, int((self.hp / self.max_hp) * 50))
         lost_health_width = 50 - current_health_width
-
-        pg.draw.rect(self.game.screen,(0, 255, 0), (self.x * 80 + 40 - 50 // 2, self.y * 80 + 5, current_health_width, 5))
-        pg.draw.rect(self.game.screen,(255, 0, 0),  (self.x * 80 + 40 - 50 // 2 + current_health_width, self.y * 80 + 5, lost_health_width, 5))
+        if self.hp != self.max_hp:
+            pg.draw.rect(self.game.screen,(0, 255, 0), (self.x * 80 + 40 - 50 // 2, self.y * 80 + 5, current_health_width, 5))
+            pg.draw.rect(self.game.screen,(255, 0, 0),  (self.x * 80 + 40 - 50 // 2 + current_health_width, self.y * 80 + 5, lost_health_width, 5))
 
         if self.game.unit_handler.units[self.game.turn] == self:
             if self.ready_to_attack:
