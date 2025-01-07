@@ -144,6 +144,13 @@ class Unit:
                 if self.calculate_distance_to((x, y)) <= self.speed and not self.game.map.check_collision((x, y)):
                     pg.draw.rect(self.game.screen, "white", (x * 80, y * 80, 80, 80), 3)
 
+    def can_move(self):
+        for x in range(len(self.game.map.map_tab[0])):
+            for y in range(len(self.game.map.map_tab[0])):
+                if self.calculate_distance_to((x, y)) <= self.speed and not self.game.map.check_collision((x, y)):
+                    return True
+        return False
+
     def highlight_valid_attacks(self):
         for x in range(len(self.game.map.map_tab[0])):
             for y in range(len(self.game.map.map_tab)):
@@ -222,7 +229,7 @@ class UnitHandler:
                         if unit.attack(tile):
                             return True
 
-            if unit.move(tile):
+            if unit.move(tile) or not unit.can_move():
                 unit.ready_to_attack = unit.can_attack()
                 return not unit.ready_to_attack
 

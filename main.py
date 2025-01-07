@@ -132,5 +132,3 @@ if __name__ == "__main__":
     game.unit_handler.add_unit(B4)
 
     game.run()
-
-
